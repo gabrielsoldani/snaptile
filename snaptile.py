@@ -94,8 +94,7 @@ def checkevt(_, __, handle=None):
             }
 
         if event.type == X.KeyRelease:
-            if event.detail == lastkey_state['code']:
-                lastkey_state['pressed'] = False
+            lastkey_state['pressed'] = False
 
     return True
 
