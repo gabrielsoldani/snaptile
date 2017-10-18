@@ -4,9 +4,13 @@ def position(startpos, endpos):
     window, screen = active_window()
     window.unmaximize()
     window.set_shadow_width(0, 0, 0, 0)
-    workarea = screen.get_monitor_workarea(screen.get_monitor_at_window(window))
 
-    offx, offy = offsets(window)
+    monitor = screen.get_monitor_at_window(window)
+    geometry = screen.get_monitor_geometry(monitor)
+    workarea = screen.get_monitor_workarea(monitor)
+
+    moffx, moffy = (workarea.x - geometry.x, workarea.y - geometry.y)
+    woffx, woffy = offsets(window)
     w, h = (workarea.width / 4, workarea.height / 3)
 
     pos = (
@@ -18,10 +22,10 @@ def position(startpos, endpos):
         max(abs(endpos[1] - startpos[1]) + 1, 1)
     )
     window.move_resize(
-        pos[1] * w,
-        pos[0] * h,
-        w * dims[1] - (offx * 2),
-        h * dims[0]- (offx + offy)
+        pos[1] * w + moffx,
+        pos[0] * h + moffy,
+        w * dims[1] - (woffx * 2),
+        h * dims[0] - (woffx + woffy)
     )
 
 def active_window():
